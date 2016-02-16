@@ -1,0 +1,32 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+	<link rel="stylesheet" type="text/css" href="{% static "css/message.css" %}">
+</head>
+<body>
+	
+	<div class="container">
+		<h2>Message Board:</h2>
+			{% for mess in message %}
+		<div class="post">
+		
+			<h2>{{ mess.user }}</h2>
+			 <p>{{ mess.body|linebreaks }}</p> 
+			<br>
+			<hr>
+			{% for comment in mess.comment_set.all %}
+			<p><b>{{ comment.user }}</b>&nbsp{{ comment.body }}</p>
+			{% endfor %}
+			
+		</div>
+{% endfor %}
+	</div>
+
+	
+
+</body>
+</html>
