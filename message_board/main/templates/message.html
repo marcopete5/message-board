@@ -10,23 +10,59 @@
 <body>
 	
 	<div class="container">
+		
+
+		{% if user.is_authenticated %}
+
+    <p>Welcome, {{ user.username }}  <a href="{% url 'logout' %}">[logout]</a></p>
+		{% else %}
+    <p>Welcome, Guest <a href="{% url 'login' %}">[login]</a><a href="/signup">[Sign Up]</a></p>
+		{% endif %}
+		
+			 {% if user.is_authenticated %}
+			<p><a href="/post">Post</a></p>
+						{% block post %}
+							{% endblock %}
+							  {% else %}
+          login to Post a Message
+     		 {% endif %}
 		<h2>Message Board:</h2>
-			{% for mess in message %}
-		<div class="post">
+			{% for mess in messages %}
+		<div id="{{mess.id}}" class="post">
 		
 			<h2>{{ mess.user }}</h2>
 			 <p>{{ mess.body|linebreaks }}</p> 
 			<br>
 			<hr>
+
 			{% for comment in mess.comment_set.all %}
 			<p><b>{{ comment.user }}</b>&nbsp{{ comment.body }}</p>
-			{% endfor %}
+		    {% endfor %}
+
+		    {% if user.is_authenticated %}
+          <form action="#{{mess.id}}" method="post">{% csrf_token %}
+              <input type='text' name='comment_body' placeholder="Write a Comment" style="width:80%; height:100%;" />
+
+              <input type='hidden' value='{{ mess.pk }}' name='message' />
+              <input type='hidden' value='{{ user }}' name='user' />
+
+              <input type="submit" value="Create" />
+          </form>
+      {% else %}
+          login to make a Comment
+      {% endif %}
+
+
+
 			
 		</div>
 {% endfor %}
+
 	</div>
 
-	
+{% block content %}
+		{% endblock content %}
+
 
 </body>
 </html>

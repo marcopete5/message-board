@@ -1,0 +1,11 @@
+{% extends "message.html" %}
+{% block post %}
+          <form action="" method="post">{% csrf_token %}
+              <input type='text' name='message_body' placeholder="Message" />
+
+              <input type='hidden' value='{{ title }}' name='title' />
+              <input type='hidden' value='{{ user }}' name='user' />
+
+              <input type="submit" value="Create" />
+          </form>
+{% endblock  %}
